@@ -1,5 +1,6 @@
 package ru.minilan.sensorsview;
 
+import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -7,9 +8,12 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,17 +28,26 @@ public class MainActivity extends AppCompatActivity {
     private Sensor sensorTemp;
     private Sensor sensorHumidity;
     private Sensor sensorLight;
-
+    private TempView tempView, tempView1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        LinearLayout linearLayoutMain = findViewById(R.id.linearLayoutMain);
+
+        // Program add custom View
+        tempView = new TempView(MainActivity.this);
+        linearLayoutMain.addView(tempView, 0);
+
+
         textViewTemp = findViewById(R.id.textViewTemp);
         textViewHumidity = findViewById(R.id.textViewHumidity);
         textViewSensorsList = findViewById(R.id.textViewSensorsList);
         textViewLight = findViewById(R.id.textViewLight);
+        tempView1 = findViewById(R.id.tempView1);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
@@ -45,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "There is no temperature sensor!", Toast.LENGTH_LONG).show();
         }
         if (sensorHumidity == null) {
-            Toast.makeText(this,"There is no Humidity sensor",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "There is no Humidity sensor", Toast.LENGTH_LONG).show();
         }
         if (sensorLight == null) {
-            Toast.makeText(this,"There is no light sensor",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "There is no light sensor", Toast.LENGTH_LONG).show();
         }
         sensorManager.registerListener(listenerLight, sensorLight, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(listenerTemp, sensorTemp, SensorManager.SENSOR_DELAY_NORMAL);
@@ -59,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showSensors() {
         StringBuilder sb = new StringBuilder();
-        sb.append("-------------------------------------------------------------\n").append("Sensor List:\n");
+        sb.append("-----------------------------------------------------------------\n").append("Sensor List:\n");
         int i = 1;
         for (Sensor sensor : sensorList) {
             sb.append("- " + i + " -------------------------------------------------------------\n");
@@ -97,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
         }
     };
 
@@ -105,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Temp sensor value = ").append(event.values[0]);
         textViewTemp.setText(stringBuilder);
+        tempView.setTemp((int)event.values[0]);
+        tempView1.setTemp((int)event.values[0]);
     }
 
     SensorEventListener listenerTemp = new SensorEventListener() {
