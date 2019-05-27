@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Sensorsview</string>
+    <string name="temperature_no_data">Temp sensor value = no sensor</string>
+    <string name="humidity_no_data">Humidity sensor value = no sensor</string>
+    <string name="sensors_list_no_data">Sensors list - no data</string>
+    <string name="lightsensor_no_data">Light sensor value = no sensor</string>
 </resources>
