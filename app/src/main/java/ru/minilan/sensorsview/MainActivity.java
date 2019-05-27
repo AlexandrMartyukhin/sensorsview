@@ -63,9 +63,6 @@ public class MainActivity extends AppCompatActivity {
         if (sensorLight == null) {
             Toast.makeText(this, "There is no light sensor", Toast.LENGTH_LONG).show();
         }
-        sensorManager.registerListener(listenerLight, sensorLight, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(listenerTemp, sensorTemp, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(listenerHumidity, sensorHumidity, SensorManager.SENSOR_DELAY_NORMAL);
 
         showSensors();
     }
@@ -93,7 +90,14 @@ public class MainActivity extends AppCompatActivity {
         sensorManager.unregisterListener(listenerLight, sensorLight);
         sensorManager.unregisterListener(listenerTemp, sensorTemp);
         sensorManager.unregisterListener(listenerHumidity, sensorHumidity);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(listenerLight, sensorLight, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(listenerTemp, sensorTemp, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(listenerHumidity, sensorHumidity, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     private void showLightSensors(SensorEvent event) {
