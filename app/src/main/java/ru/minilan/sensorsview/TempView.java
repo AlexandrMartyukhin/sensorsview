@@ -7,9 +7,9 @@ import android.widget.TextView;
 
 public class TempView extends LinearLayout {
 
-    TextView textViewTempName;
-    TextView textViewTempValue;
-    int tempValue;
+    private TextView textViewTempName;
+    private TextView textViewTempValue;
+    private int tempValue;
 
 
     public TempView(Context context) {
